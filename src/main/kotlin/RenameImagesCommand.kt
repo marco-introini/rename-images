@@ -26,7 +26,10 @@ class RenameImagesCommand : CliktCommand() {
             println("Working on $directory")
             val imageCollection = ImageCollection.fromDirectory()
             println("Found ${imageCollection.images.size} image files.")
-            println(imageCollection)
+            //println(imageCollection)
+
+            println("=============================")
+            imageCollection.generateNewFileNames()
         } else {
             println("The directory is empty or does not contain files.")
         }

@@ -10,6 +10,7 @@ object Context{
     var customText: String = ""
     var filePrefixesToIgnore: List<String> = emptyList()
     var allowedExtensions: List<String> = listOf("jpg", "jpeg", "png", "heic")
+    var numberOfDigitsInSequence: Int = 4
 }
 
 fun main(args: Array<String>) {
