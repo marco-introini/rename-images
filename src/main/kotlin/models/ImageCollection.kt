@@ -6,11 +6,13 @@ import java.io.File
 
 class ImageCollection() {
     val images = mutableListOf<Image>()
+    var basePath: String = ""
 
     companion object {
         fun fromDirectory(directory: String): ImageCollection {
             val dir = File(directory)
             val imagesCollection = ImageCollection()
+            imagesCollection.basePath = directory
             // Get the list of all files in the directory
             val files = dir.listFiles()
 
@@ -27,7 +29,9 @@ class ImageCollection() {
 
     fun add(imageName: String) {
         if (isValidImage(imageName)) {
-            images.add(Image(imageName,"",""))
+            val image = Image(imageName)
+            image.extractMetadata(basePath)
+            images.add(image)
         }
     }
 

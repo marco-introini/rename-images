@@ -11,9 +11,8 @@ repositories {
 
 dependencies {
     implementation("com.github.ajalt.clikt:clikt:5.0.0")
-    // optional support for rendering markdown in help messages
     implementation("com.github.ajalt.clikt:clikt-markdown:5.0.0")
-
+    implementation("com.ashampoo:kim:0.18.4")
 
     testImplementation(kotlin("test"))
 }
