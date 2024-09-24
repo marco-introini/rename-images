@@ -5,7 +5,7 @@ import kotlin.collections.isNotEmpty
 import java.io.File
 
 class ImageCollection() {
-    val images = mutableListOf<String>()
+    val images = mutableListOf<Image>()
 
     companion object {
         fun fromDirectory(directory: String): ImageCollection {
@@ -25,22 +25,22 @@ class ImageCollection() {
         }
     }
 
-    fun add(image: String) {
-        if (isValidImage(image)) {
-            images.add(image)
+    fun add(imageName: String) {
+        if (isValidImage(imageName)) {
+            images.add(Image(imageName,"",""))
         }
     }
 
-    fun remove(image: String) {
+    fun remove(image: Image) {
         images.remove(image)
     }
 
     override fun toString(): String {
-        return images.joinToString("\n") { it }
+        return images.joinToString("\n") { it.toString() }
     }
 
-    private fun isValidImage(image: String): Boolean {
-        val extension = image.substringAfterLast('.', "")
+    private fun isValidImage(imageName: String): Boolean {
+        val extension = imageName.substringAfterLast('.', "")
         val allowedExtensions = listOf("jpg", "jpeg", "png", "heic")
         return extension.lowercase() in allowedExtensions
     }
