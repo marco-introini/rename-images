@@ -32,4 +32,8 @@ data class Image(
         return formatter.format(date)
     }
 
+    fun generateNewFileName(context: Context): Unit {
+        newFileName = "${context.filePrefix}${datePrefix}_XXXX_"
+    }
+
 }

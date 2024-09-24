@@ -26,6 +26,7 @@ class ImageCollection(val context: Context) {
         if (isValidImage(imageName)) {
             val image = Image(imageName)
             image.extractMetadata(context)
+            image.generateNewFileName(context)
             images.add(image)
         }
     }
