@@ -2,6 +2,7 @@ package me.mintdev.models
 
 import com.ashampoo.kim.Kim
 import com.ashampoo.kim.common.convertToPhotoMetadata
+import me.mintdev.Context
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -16,17 +17,14 @@ data class Image(
     var renamed: Boolean = false,
 ) {
 
-    fun extractMetadata(path: String): Unit {
-        val byteArray = File("$path/$name").readBytes()
+    fun extractMetadata(context: Context): Unit {
+        val byteArray = File("${context.workingDirectory.absolutePath}/$name").readBytes()
         val photoMetadata = Kim.readMetadata(byteArray)?.convertToPhotoMetadata()
-        //println(photoMetadata)
 
         takenDate = photoMetadata?.takenDate ?: 0
         datePrefix = formatDate(Date(takenDate))
         cameraModel = photoMetadata?.cameraModel ?: ""
         fileFormat = photoMetadata?.imageFormat.toString()
-
-        println(Date(takenDate))
     }
 
     fun formatDate(date: Date): String {
