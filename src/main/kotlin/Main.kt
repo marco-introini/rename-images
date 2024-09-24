@@ -1,5 +1,7 @@
 package me.mintdev
 
-fun main() {
-    println("Hello World!")
+import com.github.ajalt.clikt.core.main
+
+fun main(args: Array<String>) {
+    RenameImagesCommand().main(args)
 }
