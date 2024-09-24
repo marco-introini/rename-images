@@ -39,18 +39,21 @@ class ImageCollection {
     }
 
     private fun isValidImage(imageName: String): Boolean {
+        // filename begins with an ignored string
+        if (Context.filePrefixesToIgnore.any { imageName.startsWith(it) }) return false
         val fileExtension = imageName.substringAfterLast('.', "")
+        // extension is an allowed extension
         return fileExtension.lowercase() in Context.allowedExtensions
     }
 
     fun generateNewFileNames() {
-        val groupedImages = images.groupBy { it.datePrefix }
+        val groupedImages = images.sortedBy { it.datePrefix }.groupBy { it.datePrefix }
         for ((datePrefix, imageList) in groupedImages) {
-            println("Chiave: $datePrefix")
+            println("DATE: $datePrefix")
             var sequenceNumber = 0
-            imageList.sortedBy { it.takenDate }.forEach { it.generateNewFileName(++sequenceNumber)}
+            imageList.sortedBy { it.takenDate }.forEach { it.generateNewFileName(++sequenceNumber) }
             for (image in imageList) {
-                println(" - Valore: $image")
+                println(" - ${image.name} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
             }
         }
     }

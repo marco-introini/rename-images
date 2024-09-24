@@ -8,7 +8,7 @@ object Context{
     var dryRun: Boolean = false
     var filePrefix: String = ""
     var customText: String = ""
-    var filePrefixesToIgnore: List<String> = emptyList()
+    var filePrefixesToIgnore: List<String> = listOf("MI2")
     var allowedExtensions: List<String> = listOf("jpg", "jpeg", "png", "heic")
     var numberOfDigitsInSequence: Int = 4
 }
