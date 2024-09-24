@@ -10,11 +10,12 @@ class RenameImagesCommand : CliktCommand() {
 
     override fun run() {
         val dir = File(directory)
+        val context = Context(File(directory))
         val imageCollection: ImageCollection
         // Check if the directory exists and if it is a directory (not a file)
         if (dir.exists() && dir.isDirectory) {
             println("Existing directory: $directory")
-            imageCollection = ImageCollection.fromDirectory(directory)
+            imageCollection = ImageCollection.fromDirectory(context)
             println("Found ${imageCollection.images.size} files.")
             println(imageCollection)
         } else {

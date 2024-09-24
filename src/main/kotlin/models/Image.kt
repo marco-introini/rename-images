@@ -9,9 +9,11 @@ import java.util.Date
 data class Image(
     val name: String,
     var takenDate: Long = 0,
-    var formattedDate: String = "",
+    var newFileName: String = "",
+    var datePrefix: String = "",
     var fileFormat: String = "",
     var cameraModel: String = "",
+    var renamed: Boolean = false,
 ) {
 
     fun extractMetadata(path: String): Unit {
@@ -20,7 +22,7 @@ data class Image(
         //println(photoMetadata)
 
         takenDate = photoMetadata?.takenDate ?: 0
-        formattedDate = formatDate(Date(takenDate))
+        datePrefix = formatDate(Date(takenDate))
         cameraModel = photoMetadata?.cameraModel ?: ""
         fileFormat = photoMetadata?.imageFormat.toString()
 
