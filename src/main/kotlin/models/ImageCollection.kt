@@ -1,6 +1,6 @@
 package me.mintdev.models
 
-class ImagesCollection {
+class ImageCollection {
     val images = mutableListOf<String>()
 
     fun add(image: String) {

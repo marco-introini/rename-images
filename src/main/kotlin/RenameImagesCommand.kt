@@ -2,14 +2,14 @@ package me.mintdev
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
-import me.mintdev.models.ImagesCollection
+import me.mintdev.models.ImageCollection
 import java.io.File
 
 class RenameImagesCommand: CliktCommand() {
     val directory: String by argument()
 
     override fun run() {
-        val imagesCollection = ImagesCollection()
+        val imagesCollection = ImageCollection()
         val dir = File(directory)
 
         // Check if the directory exists and if it is a directory (not a file)
