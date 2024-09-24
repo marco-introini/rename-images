@@ -17,8 +17,8 @@ data class Image(
     var renamed: Boolean = false,
 ) {
 
-    fun extractMetadata(context: Context): Unit {
-        val byteArray = File("${context.workingDirectory.absolutePath}/$name").readBytes()
+    fun extractMetadata(): Unit {
+        val byteArray = File("${Context.workingDirectory.absolutePath}/$name").readBytes()
         val photoMetadata = Kim.readMetadata(byteArray)?.convertToPhotoMetadata()
 
         takenDate = photoMetadata?.takenDate ?: 0
@@ -32,8 +32,8 @@ data class Image(
         return formatter.format(date)
     }
 
-    fun generateNewFileName(context: Context): Unit {
-        newFileName = "${context.filePrefix}${datePrefix}_XXXX_"
+    fun generateNewFileName(): Unit {
+        newFileName = "${Context.filePrefix}${datePrefix}_XXXX_"
     }
 
 }

@@ -2,7 +2,6 @@ package me.mintdev
 
 import com.github.ajalt.clikt.core.CliktCommand
 import com.github.ajalt.clikt.parameters.arguments.argument
-import com.github.ajalt.clikt.parameters.arguments.optional
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.help
 import com.github.ajalt.clikt.parameters.options.option
@@ -18,16 +17,14 @@ class RenameImagesCommand : CliktCommand() {
 
     override fun run() {
         val dir = File(directory)
-        val context = Context(
-            workingDirectory = File(directory),
-            dryRun = dryRun,
-            customText = customText,
-            filePrefix = "MIK",
-        )
+        Context.workingDirectory = File(directory)
+        Context.dryRun = dryRun
+        Context.customText = customText
+        Context.filePrefix = "MIK"
 
         if (dir.exists() && dir.isDirectory) {
             println("Working on $directory")
-            val imageCollection = ImageCollection.fromDirectory(context)
+            val imageCollection = ImageCollection.fromDirectory()
             println("Found ${imageCollection.images.size} image files.")
             println(imageCollection)
         } else {

@@ -4,13 +4,13 @@ import me.mintdev.Context
 import kotlin.collections.forEach
 import kotlin.collections.isNotEmpty
 
-class ImageCollection(val context: Context) {
+class ImageCollection() {
     val images = mutableListOf<Image>()
 
     companion object {
-        fun fromDirectory(context: Context): ImageCollection {
-            val imagesCollection = ImageCollection(context)
-            val files = context.workingDirectory.listFiles()
+        fun fromDirectory(): ImageCollection {
+            val imagesCollection = ImageCollection()
+            val files = Context.workingDirectory.listFiles()
 
             if (files != null && files.isNotEmpty()) {
                 files.forEach { file ->
@@ -25,8 +25,8 @@ class ImageCollection(val context: Context) {
     fun add(imageName: String) {
         if (isValidImage(imageName)) {
             val image = Image(imageName)
-            image.extractMetadata(context)
-            image.generateNewFileName(context)
+            image.extractMetadata()
+            image.generateNewFileName()
             images.add(image)
         }
     }
@@ -41,6 +41,6 @@ class ImageCollection(val context: Context) {
 
     private fun isValidImage(imageName: String): Boolean {
         val fileExtension = imageName.substringAfterLast('.', "")
-        return fileExtension.lowercase() in context.allowedExtensions
+        return fileExtension.lowercase() in Context.allowedExtensions
     }
 }
