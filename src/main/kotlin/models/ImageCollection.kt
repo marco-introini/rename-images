@@ -20,6 +20,14 @@ class ImageCollection {
             }
             throw Exception("Directory not found or is empty.")
         }
+
+        fun fromListOfImages(list: List<Image>): ImageCollection {
+            val imageCollection = ImageCollection()
+            list.forEach {
+                imageCollection.images.add(it)
+            }
+            return imageCollection
+        }
     }
 
     fun add(imageName: String) {
@@ -56,5 +64,9 @@ class ImageCollection {
                 println(" - ${image.name} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
             }
         }
+    }
+
+    fun hasDuplicateFilenames(): Boolean {
+        return images.groupingBy { it.newFileName }.eachCount().any { it.value > 1 }
     }
 }
