@@ -1,6 +1,7 @@
 package me.mintdev.models
 
 import me.mintdev.Context
+import java.io.File
 import kotlin.collections.forEach
 import kotlin.collections.isNotEmpty
 
@@ -8,9 +9,11 @@ class ImageCollection {
     val images = mutableListOf<Image>()
 
     companion object {
-        fun fromDirectory(): ImageCollection {
+        fun fromDirectory(
+            directory: File,
+        ): ImageCollection {
             val imagesCollection = ImageCollection()
-            val files = Context.workingDirectory.listFiles()
+            val files = directory.listFiles()
 
             if (files != null && files.isNotEmpty()) {
                 files.forEach { file ->
@@ -21,9 +24,9 @@ class ImageCollection {
             throw Exception("Directory not found or is empty.")
         }
 
-        fun fromListOfImages(list: List<Image>): ImageCollection {
+        fun fromListOfImages(imageList: List<Image>): ImageCollection {
             val imageCollection = ImageCollection()
-            list.forEach {
+            imageList.forEach {
                 imageCollection.images.add(it)
             }
             return imageCollection
@@ -57,10 +60,21 @@ class ImageCollection {
     fun generateNewFileNames() {
         val groupedImages = images.sortedBy { it.datePrefix }.groupBy { it.datePrefix }
         for ((datePrefix, imageList) in groupedImages) {
-            println("DATE: $datePrefix")
             var sequenceNumber = 0
             imageList.sortedBy { it.takenDate }
                 .forEach { it.generateNewFileName(++sequenceNumber, Context.customText) }
+        }
+    }
+
+    fun returnOrderedCollection() {
+        val groupedImages = images.sortedBy { it.datePrefix }.groupBy { it.datePrefix }
+        for ((datePrefix, imageList) in groupedImages) {
+            println("DATE: $datePrefix")
+            var sequenceNumber = 0
+            imageList.sortedBy { it.takenDate }
+            for (image in imageList) {
+                println(" - ${image.fileName} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
+            }
         }
     }
 
