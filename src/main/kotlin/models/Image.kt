@@ -8,17 +8,18 @@ import java.text.SimpleDateFormat
 import java.util.Date
 
 data class Image(
-    val name: String,
-    var takenDate: Long = 0,
+    val fileName: String,
     var newFileName: String = "",
+    var takenDate: Long = 0,
     var datePrefix: String = "",
     var fileFormat: String = "",
     var cameraModel: String = "",
+    val sidecars: Array<Sidecar> = arrayOf(),
     var renamed: Boolean = false,
 ) {
 
     fun extractMetadata(): Unit {
-        val byteArray = File("${Context.workingDirectory.absolutePath}/$name").readBytes()
+        val byteArray = File("${Context.workingDirectory.absolutePath}/$fileName").readBytes()
         val photoMetadata = Kim.readMetadata(byteArray)?.convertToPhotoMetadata()
 
         takenDate = photoMetadata?.takenDate ?: 0
@@ -27,13 +28,20 @@ data class Image(
         fileFormat = photoMetadata?.imageFormat.toString()
     }
 
-    fun formatDate(date: Date): String {
+    fun generateNewFileName(sequenceNumber: Int): Unit {
+        newFileName = "${Context.filePrefix}${datePrefix}_XXXX_${sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')}"
+    }
+
+    private fun formatDate(date: Date): String {
         val formatter = SimpleDateFormat("yyyyMMdd")
         return formatter.format(date)
     }
 
-    fun generateNewFileName(sequenceNumber: Int): Unit {
-        newFileName = "${Context.filePrefix}${datePrefix}_XXXX_${sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')}"
+    fun loadSidecars() {
+        val current = "${Context.workingDirectory.absolutePath}/$fileName"
+        // remove extension
+        // check for all files beginning with current
+        // add a sidecar entry for every found file
     }
 
 }

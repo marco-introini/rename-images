@@ -61,7 +61,7 @@ class ImageCollection {
             var sequenceNumber = 0
             imageList.sortedBy { it.takenDate }.forEach { it.generateNewFileName(++sequenceNumber) }
             for (image in imageList) {
-                println(" - ${image.name} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
+                println(" - ${image.fileName} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
             }
         }
     }
