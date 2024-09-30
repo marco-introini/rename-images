@@ -30,6 +30,9 @@ class RenameImagesCommand : CliktCommand() {
 
             println("=============================")
             imageCollection.generateNewFileNames()
+            for (image in imageCollection.images) {
+                println(" - ${image.fileName} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
+            }
         } else {
             println("The directory is empty or does not contain files.")
         }
