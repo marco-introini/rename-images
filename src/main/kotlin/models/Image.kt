@@ -28,8 +28,8 @@ data class Image(
         fileFormat = photoMetadata?.imageFormat.toString()
     }
 
-    fun generateNewFileName(sequenceNumber: Int): Unit {
-        newFileName = "${Context.filePrefix}${datePrefix}_XXXX_${sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')}"
+    fun generateNewFileName(sequenceNumber: Int, customText: String): Unit {
+        newFileName = "${Context.filePrefix}${datePrefix}_${customText}_${sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')}"
     }
 
     private fun formatDate(date: Date): String {
@@ -38,8 +38,8 @@ data class Image(
     }
 
     fun loadSidecars() {
+        val baseFile = fileName.substringBeforeLast('.', "")
         val current = "${Context.workingDirectory.absolutePath}/$fileName"
-        // remove extension
         // check for all files beginning with current
         // add a sidecar entry for every found file
     }

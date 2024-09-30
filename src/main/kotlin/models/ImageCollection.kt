@@ -59,10 +59,8 @@ class ImageCollection {
         for ((datePrefix, imageList) in groupedImages) {
             println("DATE: $datePrefix")
             var sequenceNumber = 0
-            imageList.sortedBy { it.takenDate }.forEach { it.generateNewFileName(++sequenceNumber) }
-            for (image in imageList) {
-                println(" - ${image.fileName} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
-            }
+            imageList.sortedBy { it.takenDate }
+                .forEach { it.generateNewFileName(++sequenceNumber, Context.customText) }
         }
     }
 
