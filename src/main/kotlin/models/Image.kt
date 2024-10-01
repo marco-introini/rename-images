@@ -4,6 +4,9 @@ import com.ashampoo.kim.Kim
 import com.ashampoo.kim.common.convertToPhotoMetadata
 import me.mintdev.Context
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -14,7 +17,7 @@ data class Image(
     var datePrefix: String = "",
     var fileFormat: String = "",
     var cameraModel: String = "",
-    val sidecars: Array<Sidecar> = arrayOf(),
+    var sidecars: MutableList<Sidecar> = mutableListOf<Sidecar>(),
     var renamed: Boolean = false,
 ) {
 
@@ -29,7 +32,9 @@ data class Image(
     }
 
     fun generateNewFileName(sequenceNumber: Int, customText: String): Unit {
-        newFileName = "${Context.filePrefix}${datePrefix}_${customText}_${sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')}"
+        newFileName = "${Context.filePrefix}${datePrefix}_${customText}_${
+            sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')
+        }"
     }
 
     private fun formatDate(date: Date): String {
@@ -39,9 +44,15 @@ data class Image(
 
     fun loadSidecars() {
         val baseFile = fileName.substringBeforeLast('.', "")
-        val current = "${Context.workingDirectory.absolutePath}/$fileName"
-        // check for all files beginning with current
-        // add a sidecar entry for every found file
+        val directory = Paths.get(Context.workingDirectory.absolutePath)
+
+        Files.newDirectoryStream(directory, "$baseFile*").use { stream ->
+            for (path in stream) {
+                if (path.fileName.toString().startsWith(baseFile)) {
+                    sidecars.add(Sidecar(path.fileName.toString()))
+                }
+            }
+        }
     }
 
 }

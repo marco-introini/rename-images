@@ -30,7 +30,19 @@ class RenameImagesCommand : CliktCommand() {
 
             println("=============================")
             imageCollection.generateNewFileNames()
-            imageCollection.returnOrderedCollection()
+            val imageMap = imageCollection.returnOrderedMap()
+            for ((date, images) in imageMap) {
+                println("DATE: $date")
+                for (image in images) {
+                    print("=> ${image.fileName} -> ${image.newFileName} (${image.takenDate} ${image.cameraModel})")
+                    for (sidecar in image.sidecars) {
+                        print(" SIDECAR: ${sidecar.name}")
+                    }
+                    if (image.renamed) { print(" SUCCESS") }
+                    println()
+                }
+            }
+
         } else {
             println("The directory is empty or does not contain files.")
         }

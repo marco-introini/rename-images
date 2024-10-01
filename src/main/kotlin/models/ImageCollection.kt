@@ -66,16 +66,14 @@ class ImageCollection {
         }
     }
 
-    fun returnOrderedCollection() {
+    fun returnOrderedMap(): Map<String, List<Image>> {
         val groupedImages = images.sortedBy { it.datePrefix }.groupBy { it.datePrefix }
+        val map = mutableMapOf<String, List<Image>>()
         for ((datePrefix, imageList) in groupedImages) {
-            println("DATE: $datePrefix")
-            var sequenceNumber = 0
-            imageList.sortedBy { it.takenDate }
-            for (image in imageList) {
-                println(" - ${image.fileName} -> ${image.newFileName} (${image.fileFormat} - ${image.cameraModel})")
-            }
+            val imageInDate = imageList.sortedBy { it.takenDate }
+            map[datePrefix] = imageInDate
         }
+        return map
     }
 
     fun hasDuplicateFilenames(): Boolean {
