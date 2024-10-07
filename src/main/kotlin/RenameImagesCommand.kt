@@ -9,6 +9,7 @@ import com.github.ajalt.clikt.parameters.options.prompt
 import com.github.ajalt.clikt.parameters.types.boolean
 import me.mintdev.models.ImageCollection
 import java.io.File
+import kotlin.system.exitProcess
 
 class RenameImagesCommand : CliktCommand() {
     val directory: String by argument()
@@ -27,55 +28,52 @@ class RenameImagesCommand : CliktCommand() {
         Context.filePrefixesToIgnore = filePrefixToIgnore.splitToList()
         Context.allowedExtensions = fileExtension.splitToList()
 
-        if (dir.exists() && dir.isDirectory) {
-            println("Working on $directory")
-            val imageCollection = ImageCollection.fromDirectory(Context.workingDirectory)
-            println("Found ${imageCollection.images.size} image files.")
-            println("Skipped ${imageCollection.skippedImages.size} images.")
-
-            title("Checking Images")
-            imageCollection.generateNewFileNames()
-            val imageMap = imageCollection.returnOrderedMap()
-            for ((date, images) in imageMap) {
-                println("DATE: $date")
-                for (image in images) {
-                    print("=> ${image.fileName} -> ${image.newFileName} (${image.takenDate} ${image.cameraModel} Sidecar: ${image.sidecars.size()})")
-                    for (sidecar in image.sidecars.collection) {
-                        print(" SIDECAR: ${sidecar.name}")
-                    }
-                    if (image.renamed) {
-                        print(" SUCCESS")
-                    }
-                    println()
-                }
-            }
-
-            title("Checking Structure")
-
-            print("Has no duplicate image name: ")
-
-            if (imageCollection.hasDuplicateFilenames()) {
-                println("FALSE")
-                return
-            }
-            else {
-                println("TRUE")
-            }
-
-            print("No new file will collide with a current file name: ")
-            if (imageCollection.createFileAlreadyExisting()) {
-                println("FALSE")
-                return
-            } else {
-                println("TRUE")
-            }
-
-            title("Renaming Images")
-
-
-        } else {
+        if (!dir.exists() || !dir.isDirectory) {
             println("The directory is empty or does not contain files.")
+            exitProcess(-1)
         }
+        println("Working on $directory")
+        val imageCollection = ImageCollection.fromDirectory(Context.workingDirectory)
+        println("Found ${imageCollection.images.size} image files.")
+        println("Skipped ${imageCollection.skippedImages.size} images.")
+
+        title("Checking Images")
+        imageCollection.generateNewFileNames()
+        val imageMap = imageCollection.returnOrderedMap()
+        for ((date, images) in imageMap) {
+            println("DATE: $date")
+            for (image in images) {
+                print("=> ${image.fileName} -> ${image.newFileName} (${image.takenDate} ${image.cameraModel} Sidecar: ${image.sidecars.size()})")
+                for (sidecar in image.sidecars.collection) {
+                    print(" SIDECAR: ${sidecar.name}")
+                }
+                if (image.renamed) {
+                    print(" SUCCESS")
+                }
+                println()
+            }
+        }
+
+        title("Checking Structure")
+
+        print("Has no duplicate image name: ")
+
+        if (imageCollection.hasDuplicateFilenames()) {
+            println("FALSE")
+            return
+        } else {
+            println("TRUE")
+        }
+
+        print("No new file will collide with a current file name: ")
+        if (imageCollection.createFileAlreadyExisting()) {
+            println("FALSE")
+            return
+        } else {
+            println("TRUE")
+        }
+
+        title("Renaming Images")
     }
 }
 
