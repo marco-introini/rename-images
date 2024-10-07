@@ -13,6 +13,9 @@ import java.io.File
 class RenameImagesCommand : CliktCommand() {
     val directory: String by argument()
     val customText: String by option().default("NOVALUE").help("Custom text to use in filename")
+    val filePrefix: String by option().default("MIK").help("File prefix to use in renamed filename")
+    val filePrefixToIgnore: String by option().default("MI").help("File prefix to ignore")
+    val fileExtension: String by option().default("jpg,jpeg,png,heic").help("File extension to rename")
     val dryRun: Boolean by option().boolean().prompt("Dry run?").help("Do not modify file names")
 
     override fun run() {
@@ -20,7 +23,9 @@ class RenameImagesCommand : CliktCommand() {
         Context.workingDirectory = File(directory)
         Context.dryRun = dryRun
         Context.customText = customText
-        Context.filePrefix = "MIK"
+        Context.filePrefix = filePrefix
+        Context.filePrefixesToIgnore = filePrefixToIgnore.splitToList()
+        Context.allowedExtensions = fileExtension.splitToList()
 
         if (dir.exists() && dir.isDirectory) {
             println("Working on $directory")
