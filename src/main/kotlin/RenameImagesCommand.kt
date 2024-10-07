@@ -62,11 +62,10 @@ class RenameImagesCommand : CliktCommand() {
             println("The directory is empty or does not contain files.")
         }
     }
+}
 
-    fun title(message: String): Unit {
-        println("=============================")
-        println(message)
-        println("=============================")
-    }
-
+fun title(message: String): Unit {
+    println("=============================")
+    println(message)
+    println("=============================")
 }
