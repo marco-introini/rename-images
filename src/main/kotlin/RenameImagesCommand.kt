@@ -31,7 +31,7 @@ class RenameImagesCommand : CliktCommand() {
             println("Working on $directory")
             val imageCollection = ImageCollection.fromDirectory(Context.workingDirectory)
             println("Found ${imageCollection.images.size} image files.")
-            //println(imageCollection)
+            println("Skipped ${imageCollection.skippedImages.size} images.")
 
             title("Checking Images")
             imageCollection.generateNewFileNames()

@@ -7,6 +7,7 @@ import kotlin.collections.isNotEmpty
 
 class ImageCollection {
     val images = mutableListOf<Image>()
+    val skippedImages = mutableListOf<String>()
 
     companion object {
         fun fromDirectory(
@@ -39,6 +40,9 @@ class ImageCollection {
             image.extractMetadata()
             image.loadSidecars()
             images.add(image)
+        }
+        else {
+            skippedImages.add(imageName)
         }
     }
 
