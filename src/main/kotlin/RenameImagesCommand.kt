@@ -28,14 +28,14 @@ class RenameImagesCommand : CliktCommand() {
             println("Found ${imageCollection.images.size} image files.")
             //println(imageCollection)
 
-            println("=============================")
+            title("Checking Images")
             imageCollection.generateNewFileNames()
             val imageMap = imageCollection.returnOrderedMap()
             for ((date, images) in imageMap) {
                 println("DATE: $date")
                 for (image in images) {
-                    print("=> ${image.fileName} -> ${image.newFileName} (${image.takenDate} ${image.cameraModel})")
-                    for (sidecar in image.sidecars) {
+                    print("=> ${image.fileName} -> ${image.newFileName} (${image.takenDate} ${image.cameraModel} Sidecar: ${image.sidecars.size()})")
+                    for (sidecar in image.sidecars.collection) {
                         print(" SIDECAR: ${sidecar.name}")
                     }
                     if (image.renamed) { print(" SUCCESS") }
@@ -43,8 +43,25 @@ class RenameImagesCommand : CliktCommand() {
                 }
             }
 
+            title("Checking Structure")
+            println("Has no duplicate image name: ${!imageCollection.hasDuplicateFilenames()}")
+
+            if (imageCollection.hasDuplicateFilenames()) {
+                return
+            }
+
+            title("Renaming Images")
+
+
         } else {
             println("The directory is empty or does not contain files.")
         }
     }
+
+    fun title(message: String): Unit {
+        println("=============================")
+        println(message)
+        println("=============================")
+    }
+
 }

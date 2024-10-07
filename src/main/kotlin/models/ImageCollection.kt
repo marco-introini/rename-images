@@ -37,6 +37,7 @@ class ImageCollection {
         if (isValidImage(imageName)) {
             val image = Image(imageName)
             image.extractMetadata()
+            image.loadSidecars()
             images.add(image)
         }
     }

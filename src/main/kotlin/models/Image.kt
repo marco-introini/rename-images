@@ -5,7 +5,6 @@ import com.ashampoo.kim.common.convertToPhotoMetadata
 import me.mintdev.Context
 import java.io.File
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -17,7 +16,7 @@ data class Image(
     var datePrefix: String = "",
     var fileFormat: String = "",
     var cameraModel: String = "",
-    var sidecars: MutableList<Sidecar> = mutableListOf<Sidecar>(),
+    var sidecars: SidecarCollection = SidecarCollection(),
     var renamed: Boolean = false,
 ) {
 
@@ -49,7 +48,7 @@ data class Image(
         Files.newDirectoryStream(directory, "$baseFile*").use { stream ->
             for (path in stream) {
                 if (path.fileName.toString().startsWith(baseFile)) {
-                    sidecars.add(Sidecar(path.fileName.toString()))
+                    sidecars.add(path.fileName.toString())
                 }
             }
         }
