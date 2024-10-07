@@ -16,7 +16,7 @@ class RenameImagesCommand : CliktCommand() {
     val filePrefix: String by option().default("MIK").help("File prefix to use in renamed filename")
     val filePrefixToIgnore: String by option().default("MI").help("File prefix to ignore")
     val fileExtension: String by option().default("jpg,jpeg,png,heic").help("File extension to rename")
-    val dryRun: Boolean by option().boolean().prompt("Dry run?").help("Do not modify file names")
+    val dryRun: Boolean by option().boolean().prompt("Dry run?").help("Do not modify file names (dry run mode)")
 
     override fun run() {
         val dir = File(directory)
@@ -43,16 +43,31 @@ class RenameImagesCommand : CliktCommand() {
                     for (sidecar in image.sidecars.collection) {
                         print(" SIDECAR: ${sidecar.name}")
                     }
-                    if (image.renamed) { print(" SUCCESS") }
+                    if (image.renamed) {
+                        print(" SUCCESS")
+                    }
                     println()
                 }
             }
 
             title("Checking Structure")
-            println("Has no duplicate image name: ${!imageCollection.hasDuplicateFilenames()}")
+
+            print("Has no duplicate image name: ")
 
             if (imageCollection.hasDuplicateFilenames()) {
+                println("FALSE")
                 return
+            }
+            else {
+                println("TRUE")
+            }
+
+            print("No new file will collide with a current file name: ")
+            if (imageCollection.createFileAlreadyExisting()) {
+                println("FALSE")
+                return
+            } else {
+                println("TRUE")
             }
 
             title("Renaming Images")

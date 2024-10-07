@@ -80,4 +80,9 @@ class ImageCollection {
     fun hasDuplicateFilenames(): Boolean {
         return images.groupingBy { it.newFileName }.eachCount().any { it.value > 1 }
     }
+
+    fun createFileAlreadyExisting(): Boolean {
+        val allFileNames = images.map { it.fileName }.toSet()
+        return images.any { it.newFileName in allFileNames }
+    }
 }
