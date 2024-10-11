@@ -3,6 +3,8 @@ package me.mintdev.models
 import com.ashampoo.kim.Kim
 import com.ashampoo.kim.common.convertToPhotoMetadata
 import me.mintdev.Context
+import me.mintdev.exceptions.AlreadyRenamedException
+import me.mintdev.services.renameFile
 import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -52,6 +54,17 @@ data class Image(
                 }
             }
         }
+    }
+
+    fun doActualRename() {
+        if (renamed) {
+            throw AlreadyRenamedException(this)
+        }
+        renameFile(fileName, newFileName)
+        if (sidecars.isNotEmpty()) {
+            sidecars.collection.onEach { it.rename(newFileName) }
+        }
+        renamed = true;
     }
 
 }

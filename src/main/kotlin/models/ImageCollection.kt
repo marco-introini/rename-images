@@ -1,6 +1,7 @@
 package me.mintdev.models
 
 import me.mintdev.Context
+import me.mintdev.services.renameFile
 import java.io.File
 import kotlin.collections.forEach
 import kotlin.collections.isNotEmpty
@@ -40,8 +41,7 @@ class ImageCollection {
             image.extractMetadata()
             image.loadSidecars()
             images.add(image)
-        }
-        else {
+        } else {
             skippedImages.add(imageName)
         }
     }
@@ -88,5 +88,9 @@ class ImageCollection {
     fun createFileAlreadyExisting(): Boolean {
         val allFileNames = images.map { it.fileName }.toSet()
         return images.any { it.newFileName in allFileNames }
+    }
+
+    fun renameAll() {
+        images.forEach { it.doActualRename() }
     }
 }

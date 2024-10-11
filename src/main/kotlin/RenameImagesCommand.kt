@@ -74,6 +74,7 @@ class RenameImagesCommand : CliktCommand() {
         }
 
         title("Renaming Images")
+        imageCollection.renameAll()
     }
 }
 
