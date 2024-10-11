@@ -33,9 +33,10 @@ data class Image(
     }
 
     fun generateNewFileName(sequenceNumber: Int, customText: String): Unit {
+        val fileExtension = fileName.substringAfterLast('.', "")
         newFileName = "${Context.filePrefix}${datePrefix}_${customText}_${
             sequenceNumber.toString().padStart(Context.numberOfDigitsInSequence, '0')
-        }"
+        }.$fileExtension"
     }
 
     private fun formatDate(date: Date): String {
